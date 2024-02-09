@@ -2,6 +2,12 @@ import { geolocation } from '@vercel/edge';
 
 export const runtime = 'edge';
 
+function getBaseUrl() {
+  if (typeof window !== "undefined") return "";
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
 export async function POST(request: Request) {
   const body = await request.json()
   const geo = geolocation(request);
@@ -29,7 +35,7 @@ export async function POST(request: Request) {
     '/api/distribute/ap-south-1', // Mumbai, India
     '/api/distribute/ap-east-1', // Hong Kong
     '/api/distribute/af-south-1', // Cape Town, South Africa
-  ].map(endpoint => fetch(endpoint, init).then(response => {
+  ].map(endpoint => fetch(`${getBaseUrl}/${endpoint}`, init).then(response => {
     if (!response.ok) {
       throw new Error(`Failed to distribute to ${endpoint}`);
     }
