@@ -42,6 +42,9 @@ export async function POST(request: Request) {
     }
     console.log(`Distributed to ${endpoint}`);
     return response
+  }).catch(error => {
+    console.error(`Failed to distribute to ${endpoint}: ${error}`);
+    throw error;
   }))
 
   const responses = await Promise.allSettled(endpoints)
