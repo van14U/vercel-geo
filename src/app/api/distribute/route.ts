@@ -35,8 +35,9 @@ export async function POST(request: Request) {
     '/api/distribute/ap-south-1', // Mumbai, India
     '/api/distribute/ap-east-1', // Hong Kong
     '/api/distribute/af-south-1', // Cape Town, South Africa
-  ].map(endpoint => fetch(`${getBaseUrl}/${endpoint}`, init).then(response => {
+  ].map(endpoint => fetch(`${getBaseUrl()}/${endpoint}`, init).then(response => {
     if (!response.ok) {
+      console.warn(`Failed to distribute to ${endpoint}`);
       throw new Error(`Failed to distribute to ${endpoint}`);
     }
     console.log(`Distributed to ${endpoint}`);
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
   if (!ok) {
     for (const response of responses) {
       if (response.status === 'rejected') {
-        console.error(response.reason)
+        console.error('Rejectd Promise Failed to distribute', response.reason)
       }
     }
     return Response.json({ ok: false }, { status: 500 })
