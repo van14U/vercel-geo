@@ -5,13 +5,19 @@ export const runtime = 'edge';
 export const preferredRegion = 'sfo1'
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as DistributeOptions<unknown>;
-  const init = JSON.stringify(body);
+  try {
+    const body = (await request.json()) as DistributeOptions<unknown>;
+    const init = JSON.stringify(body);
 
-  const response = await fetch(body.route, {
-    method: 'POST',
-    body: init,
-  })
-  return response
+    console.warn('Requesting', body.route, 'with', init);
+    const response = await fetch(body.route, {
+      method: 'POST',
+      body: init,
+    })
+    return response
+  } catch (e) {
+    console.error('Error SFO1', e);
+    return new Response('Error', { status: 500 });
+  }
 }
 
