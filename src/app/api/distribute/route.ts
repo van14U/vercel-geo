@@ -37,14 +37,12 @@ export async function POST(request: Request) {
     '/api/distribute/af-south-1', // Cape Town, South Africa
   ].map(route => {
     const url = getBaseUrl() + route;
-    console.log({ url });
     return url;
   }
   ).map(url => fetch(url, init).then(response => {
     if (!response.ok) {
       throw new Error(`${response.status} - ${response.statusText}`);
     }
-    console.log(`OK - ${url}`);
     return response
   }).catch(error => {
     console.error(`Failed to distribute to ${url}: ${error.message ?? ''}`);
