@@ -11,11 +11,11 @@ function getBaseUrl() {
 export async function POST(request: Request) {
   const body = await request.json()
   const geo = geolocation(request);
-  console.log({ geo });
   const init = {
     method: 'POST',
     body: JSON.stringify(body),
   };
+  console.log({ geo, body });
   const endpoints = [
     '/api/distribute/us-east-1', // Washington D.C., USA
     '/api/distribute/us-east-2', // Cleveland, USA
