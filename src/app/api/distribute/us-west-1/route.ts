@@ -9,8 +9,7 @@ export async function POST(request: Request) {
     console.log("Requesting SFO1");
     const body = (await request.json()) as DistributeOptions<unknown>;
     const init = JSON.stringify(body);
-
-    console.warn('Requesting', body.route, 'with', init);
+    console.log('Requesting', body.route, 'with', init);
     const response = await fetch(body.route, {
       method: 'POST',
       body: init,
