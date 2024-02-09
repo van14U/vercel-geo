@@ -37,24 +37,18 @@ export async function POST(request: Request) {
     '/api/distribute/af-south-1', // Cape Town, South Africa
   ].map(endpoint => fetch(`${getBaseUrl()}/${endpoint}`, init).then(response => {
     if (!response.ok) {
-      console.warn(`Failed to distribute to ${endpoint}`);
-      throw new Error(`Failed to distribute to ${endpoint}`);
+      throw new Error(`!response.ok ${response.status} ${response.statusText}`);
     }
-    console.log(`Distributed to ${endpoint}`);
+    console.log(`OK - ${endpoint}`);
     return response
   }).catch(error => {
-    console.error(`Failed to distribute to ${endpoint}: ${error}`);
+    console.error(`Failed to distribute to ${endpoint}: ${error.message ?? ''}`);
     throw error;
   }))
 
   const responses = await Promise.allSettled(endpoints)
   const ok = responses.every(response => response.status === 'fulfilled')
   if (!ok) {
-    for (const response of responses) {
-      if (response.status === 'rejected') {
-        console.error('Rejectd Promise Failed to distribute', response.reason)
-      }
-    }
     return Response.json({ ok: false }, { status: 500 })
   }
   return Response.json({ ok })
