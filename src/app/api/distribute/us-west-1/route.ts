@@ -6,6 +6,7 @@ export const preferredRegion = 'sfo1'
 
 export async function POST(request: Request) {
   try {
+    console.log("Requesting SFO1");
     const body = (await request.json()) as DistributeOptions<unknown>;
     const init = JSON.stringify(body);
 
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     })
     return response
   } catch (e) {
-    console.error('Error SFO1', e);
+    console.error('Error SFO1', (e as Error)?.message);
     return new Response('Error', { status: 500 });
   }
 }
