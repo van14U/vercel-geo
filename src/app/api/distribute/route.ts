@@ -45,6 +45,7 @@ export async function POST(request: Request) {
         console.error(response.reason)
       }
     }
+    return Response.json({ ok: false }, { status: 500 })
   }
   return Response.json({ ok })
 }
